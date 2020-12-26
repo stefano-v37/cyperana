@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="CyPerAna",
-    version="0.0.0.dev",
+    version="0.0.0-SNAPSHOT",
     author="Stefano Vanin",
     description="CYcling PERformance ANAlyzer",
     long_description=long_description,
