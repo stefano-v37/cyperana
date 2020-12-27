@@ -2,6 +2,9 @@ from .read import Reader
 from fitdecode import FitReader as fr
 import pandas as pd
 
+from ..utilities import do_nothing
+
+
 class FitReader(Reader):
     def __init__(self, path):
         super().__init__(path, file_type="fit")
@@ -14,13 +17,13 @@ class FitReader(Reader):
             row_w_fields = []
             row_dicts = []
             for frame in fit:
-                row_type = frame.__class__.__name__;
+                row_type = frame.__class__.__name__
                 rows.extend([row_type])
 
                 if row_type not in unique_row_types:
                     unique_row_types.extend([row_type])
                     try:
-                        frame.fields
+                        do_nothing(frame.fields) # test for the existence of fields attribute
                         row_w_fields.extend([row_type])
                     except:
                         pass
@@ -38,4 +41,5 @@ class FitReader(Reader):
 
             # row_wo_fields = [x for x in unique_row_types if x not in row_w_fields]
         self.data = pd.DataFrame([x for x in row_dicts if x["type"] == "record"])
+        self.data = self.data.loc[:, [x for x in self.data.columns if x != "type"]]
         self.logger.info('.fit records stored in self.data')

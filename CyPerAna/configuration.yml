@@ -1,10 +1,10 @@
 athlete:
-  testName:
+  default:
     height: 185
     weight: 80
     born: "1995-06-03"
     last-update: "2020-12-27"
-  testName1:
+  testName:
     height: 195
     weight: 85
     born: "1985-06-03"
