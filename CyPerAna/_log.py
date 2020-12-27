@@ -1,7 +1,6 @@
 import logging
 import os
-
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+from .utilities import THIS_DIR
 
 logger = logging.getLogger("CyPerAna")
 logger.setLevel(logging.DEBUG)
