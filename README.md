@@ -14,7 +14,8 @@ learn/improve my knowledge on the following tools:
 - project management
     - github integrated issue tool
     - by exploring some drawing tools/methods (Archi, Drawio/ArchiMate, BMMP, C4, UML)
-    - versioning with GIT via CLI instead of PyCharm tools
+    - versioning with GIT via CLI / PyCharm tools
+    - systematic unit-testing
 - semantic versioning
     - I am not ashamed to say that at the moment my versioning is quite random
 
