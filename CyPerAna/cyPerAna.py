@@ -1,7 +1,7 @@
 import logging
 
 from .reader import FitReader
-from .utilities import get_athlete_parameters, get_cardio_zones, get_cardio_zone
+from .utilities import get_athlete_parameters, get_cardio_zones, generate_id
 from .workOut import ZwiftWorkOut
 
 
@@ -22,9 +22,11 @@ class Instance:
             _data, _start, _wo_type = reader.output()
             self._log.info(path + " stored in .data")
 
+            _id = generate_id(self.wo.keys(), _wo_type, _start)
+
             if _wo_type == "zwift":
-                self.wo["#TODO"] = ZwiftWorkOut(_data, _start)
-                self.standard_routine("#TODO")
+                self.wo[_id] = ZwiftWorkOut(_data, _start)
+                self.standard_routine(_id)
             else:
                 self._log.info("workout type: + " + _wo_type + " not implemented yet")
         else:

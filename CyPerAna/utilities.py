@@ -6,6 +6,20 @@ import yaml
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
+def generate_id(_id_keys, _wo_type, _start):
+    _id_list = [_wo_type,
+                _start.strftime("%Y%m%d")]
+
+    _multiple = sum(["-".join(x.split("-")[0:2]) == "-".join(_id_list) for x in _id_keys])
+
+    if _multiple:
+        _id_list.append(str(_multiple))
+
+    _id = "-".join(_id_list)
+
+    return _id
+
+
 def get_configuration():
     conf_path = THIS_DIR + '\\configuration.yml'
     with open(conf_path) as configuration:
