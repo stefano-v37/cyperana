@@ -79,6 +79,7 @@ dependencies:
   - pytz=2020.4=pyhd3eb1b0_0
   - pywin32=227=py38he774522_1
   - pywinpty=0.5.7=py38_0
+  - pyyaml=5.3.1=py38he774522_1
   - pyzmq=20.0.0=py38hd77b12b_1
   - qt=5.9.7=vc14h73c81de_0
   - send2trash=1.5.0=pyhd3eb1b0_1
@@ -99,9 +100,11 @@ dependencies:
   - wincertstore=0.2=py38_0
   - winpty=0.4.3=4
   - xz=5.2.5=h62dcd97_0
+  - yaml=0.2.5=he774522_0
   - zeromq=4.3.3=ha925a31_3
   - zipp=3.4.0=pyhd3eb1b0_0
   - zlib=1.2.11=h62dcd97_4
   - zstd=1.4.5=h04227a9_0
   - pip:
     - fitdecode==0.7.0
+prefix: C:\Users\svani\scoop\apps\miniconda3\current\envs\cyperana

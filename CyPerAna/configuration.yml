@@ -1,4 +1,22 @@
-athlete-name: testName
-athlete-height: 185
-athlete-weight: 80
-last-update: today
+athlete:
+  default:
+    height: null
+    weight: null
+    birth: "1995-06-03"
+    last-update: "2020-12-27"
+    cardio-zones-model: "std-garmin"
+    max-hr: null
+  testName:
+    height: 195
+    weight: 85
+    birth: "1985-06-03"
+    last-update: "2020-12-27"
+    cardio-zones-model: "std-garmin"
+    max-hr: null
+cardio-zones:
+  std-garmin:
+    1: [0.5, 0.6]
+    2: [0.6, 0.7]
+    3: [0.7, 0.8]
+    4: [0.8, 0.9]
+    5: [0.9, 1]
