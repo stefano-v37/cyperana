@@ -44,13 +44,13 @@ class GenericWorkOut:
 
 
 class TrainerWorkOut(GenericWorkOut):
-    def __init__(self, _data, _start):
+    def __init__(self, _data, _start, device = None, software = None):
         super().__init__(_data, _start)
-        self.device = None
-        self.software = None
+        self.device = device
+        self.software = software
 
 
 class ZwiftWorkOut(TrainerWorkOut):
-    def __init__(self, _data, _start):
-        super().__init__(_data, _start)
+    def __init__(self, _data, _start, device = None):
+        super().__init__(_data, _start, device = None, software = "zwift")
         self.world = None
