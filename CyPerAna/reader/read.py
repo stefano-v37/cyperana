@@ -7,6 +7,8 @@ class Reader:
         self.path = path
         self.type = file_type
         self.data = None
+        self.time_start = None
+        self.wo_type = None
         self.logger = logging.getLogger('CyPerAna.' + self.name)
         self.logger.info('creating an instance of ' + self.name)
 
@@ -14,3 +16,6 @@ class Reader:
 
     def load_file(self):
         pass
+
+    def output(self):
+        return self.data, self.time_start, self.wo_type

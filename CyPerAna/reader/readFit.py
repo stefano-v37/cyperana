@@ -39,7 +39,9 @@ class FitReader(Reader):
                             row_dict[fieldname] = value
                     row_dicts.extend([row_dict])
 
-            # row_wo_fields = [x for x in unique_row_types if x not in row_w_fields]
         self.data = pd.DataFrame([x for x in row_dicts if x["type"] == "record"])
-        self.data = self.data.loc[:, [x for x in self.data.columns if x != "type"]]
-        self.logger.info('.fit records stored in self.data')
+        self.data = self.data.loc[:, [x for x in self.data.columns if x != "type"]].set_index("timestamp")
+        self.time_start = self.data.index.min()
+        self.wo_type = [x for x in row_dicts if x["type"] == "activity"][0]["manufacturer"]
+
+        self.logger.info('.fit file loaded')

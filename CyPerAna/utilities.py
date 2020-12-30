@@ -47,6 +47,7 @@ def get_cardio_zone(hr, hr_max, cardio_zones):
 
     return zone
 
+
 def do_nothing(*args):
     pass
 

@@ -2,6 +2,7 @@ import logging
 
 from .reader import FitReader
 from .utilities import get_athlete_parameters, get_cardio_zones, get_cardio_zone
+from .workOut import ZwiftWorkOut
 
 
 class Instance:
@@ -10,32 +11,34 @@ class Instance:
         self.athlete = athlete
         self.athlete_parameters = get_athlete_parameters(self.athlete)
         self.cardio_zones = get_cardio_zones(self.athlete_parameters["cardio-zones-model"])
-        self.data = {}
+        self.wo = {}
+        # TODO: create class of wo before
         self.logger.info("Initialized instance of CyPerAna")
 
     def load(self, path):
         ext = path.split(".")[-1]
         if ext == "fit":
             reader = FitReader(path)
-            self.data["#TODO"] = reader.data.set_index("timestamp")
-            self.logger.info(path + " stored in self.data[#TODO]")
+            _data, _start, _wo_type = reader.output()
+            self.logger.info(path + " stored in .data")
+
+            if _wo_type == "zwift":
+                self.wo["#TODO"] = ZwiftWorkOut(_data, _start)
+                self.standard_routine("#TODO")
+            else:
+                self.logger.info("workout type: + " + _wo_type + " not implemented yet")
         else:
             self.logger.info("type f file not implemented yet")
 
-        self.standardRoutine("#TODO")
-
-    def standardRoutine(self, key):
+    def standard_routine(self, key):
         self.logger.info("Starting standard analysis ruotine")
-        self.athleteSpecificAnalysis(key)
+        self.athlete_specific_analysis(key)
+        self.not_athlete_specific_analysis(key)
 
-    def athleteSpecificAnalysis(self, key):
-        self.logger.info("Excuting athlete-specific analysis")
-        self.data[key]["cardio_zone"] = self.data[key]["heart_rate"].apply(
-            lambda x: get_cardio_zone(x,
-                                      self.athlete_parameters["max-hr"],
-                                      self.cardio_zones))
-        # TODO: very bad computational performance here
+    def athlete_specific_analysis(self, key):
+        self.logger.info("Executing athlete-specific analysis")
+        self.wo[key].execute_athlete_specific_analysis(self.athlete_parameters,self.cardio_zones)
 
-    def notAthleteSpecificAnalysis(self):
-        pass
-
+    def not_athlete_specific_analysis(self, key):
+        self.logger.info("Executing not-athlete-specific analysis")
+        self.wo[key].execute_not_athlete_specific_analysis()
