@@ -44,4 +44,4 @@ class FitReader(Reader):
         self.time_start = self.data.index.min()
         self.wo_type = [x for x in row_dicts if x["type"] == "activity"][0]["manufacturer"]
 
-        self.logger.info('.fit file loaded')
+        self._log.info('.fit file loaded')

@@ -1,7 +1,6 @@
 import logging
 
 from .utilities import get_cardio_zone
-from .reader import FitReader
 
 
 class GenericWorkOut:
@@ -15,11 +14,11 @@ class GenericWorkOut:
         self.duration = None
         self.cd_duration = None
 
-        self.logger = None
+        self._log = None
         self.init_logger()
 
     def init_logger(self):
-        self.logger = logging.getLogger("CyPerAna." + self.__class__.__name__)
+        self._log = logging.getLogger("CyPerAna." + self.__class__.__name__)
 
     def set_id(self, id):
         self.id = id
@@ -34,11 +33,13 @@ class GenericWorkOut:
         self.total_time = (self.data.index[-1] - self.data.index[0])
 
     def execute_athlete_specific_analysis(self, athlete_parameters, cardio_zones):
+        self._log.info("Executing athlete-specific analysis on wo")
         self.data["cardio_zone"] = self.data["heart_rate"].apply(
             lambda x: get_cardio_zone(x, athlete_parameters["max-hr"], cardio_zones))
         # TODO: very bad computational performance here
 
-    def execute_not_athlete_specific_analysis(self):
+    def execute_non_athlete_specific_analysis(self):
+        self._log.info("Executing non athlete-specific analysis on wo")
         self.set_total_time()
 
 

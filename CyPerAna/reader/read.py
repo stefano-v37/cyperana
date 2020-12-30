@@ -9,8 +9,8 @@ class Reader:
         self.data = None
         self.time_start = None
         self.wo_type = None
-        self.logger = logging.getLogger('CyPerAna.' + self.name)
-        self.logger.info('creating an instance of ' + self.name)
+        self._log = logging.getLogger('CyPerAna.' + self.name)
+        self._log.info('creating an instance of ' + self.name)
 
         self.load_file()
 
