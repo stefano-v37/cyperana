@@ -2,7 +2,7 @@ import logging
 
 from .reader import FitReader
 from .utilities import get_athlete_parameters, get_cardio_zones, generate_id
-from .workOut import ZwiftWorkOut
+from .workout import ZwiftWorkOut
 
 
 class Instance:

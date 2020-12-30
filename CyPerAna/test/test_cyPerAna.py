@@ -18,10 +18,15 @@ class InitTest(unittest.TestCase):
 
     def test_multiple_loading(self):
         inst = cpa.Instance("default")
-        for i in range(3):
+        for i in range(2):
             inst.load("data1.fit")
 
-        self.assertEqual(list(inst.wo.keys()), ["zwift-20201225", "zwift-20201225-1", "zwift-20201225-2"])
+        self.assertEqual(list(inst.wo.keys()), ["zwift-20201225", "zwift-20201225-1"])
+
+        for i in range(2):
+            inst.load("data1.fit")
+        self.assertEqual(list(inst.wo.keys()), ["zwift-20201225", "zwift-20201225-1", "zwift-20201225-2",
+                                                "zwift-20201225-3"])
 
 
 if __name__ == '__main__':
