@@ -1,9 +1,20 @@
 from datetime import datetime as dt
 import os
+import numpy as np
 from pandas import to_datetime as td
 import yaml
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+
+def calculate_torque(power, rpm):
+    """
+    Accepts scalars and np.array() as input
+    :param power (W):
+    :param rpm (1/60s):
+    :return: torque (Nm)
+    """
+    torque = power / (2*np.pi*(rpm/60))
+    return torque
 
 
 def generate_id(_id_keys, _wo_type, _start):
