@@ -35,13 +35,19 @@ class FitReader(Reader):
                     row_dict = {"type": name}
                     for fieldname in fieldnames:
                         value = frame.get_value(fieldname)
-                        if value != None:
+                        if value is not None:
                             row_dict[fieldname] = value
                     row_dicts.extend([row_dict])
 
+        self.time_start = [x["timestamp"] for x in row_dicts if x["type"] == "event" if x["event_type"] == "start"][0]
+        self.time_end = [x["timestamp"] for x in row_dicts if x["type"] == "event" if x["event_type"] == "stop_all"][0]
+
         self.data = pd.DataFrame([x for x in row_dicts if x["type"] == "record"])
-        self.data = self.data.loc[:, [x for x in self.data.columns if x != "type"]].set_index("timestamp")
-        self.time_start = self.data.index.min()
+        self.data = self.data.loc[:, [x for x in self.data.columns if x != "type"]]
+        self.data["duration"] = (self.data["timestamp"] - self.data["timestamp"].shift()).dt.total_seconds()
+        self.data.loc[0, "duration"] = (self.data["timestamp"].iloc[0] - self.time_start).total_seconds()
+        self.data = self.data.set_index("timestamp")
+
         self.wo_type = [x for x in row_dicts if x["type"] == "activity"][0]["manufacturer"]
 
         self._log.info('.fit file loaded')

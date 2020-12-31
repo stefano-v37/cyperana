@@ -1,6 +1,6 @@
 import logging
 
-from .utilities import get_cardio_zone
+from .utilities import calculate_energy, calculate_torque, get_cardio_zone
 
 
 class GenericWorkOut:
@@ -14,8 +14,22 @@ class GenericWorkOut:
         self.duration = None
         self.cd_duration = None
 
+        self.total_energy = None
+        self.fat_burned = None # kg
+        self.avg_power = None
+        self.max_power = None
+        self.max_torque = None
+
         self._log = None
         self.init_logger()
+
+    def add_energy(self):
+        self.data["energy"] = calculate_energy(self.data["power"], self.data["duration"])
+        self.total_energy = self.data["energy"].sum()
+        self.fat_burned = self.total_energy / 37000000
+
+    def add_torque(self):
+        self.data["torque"] = calculate_torque(self.data["power"], self.data["cadence"])
 
     def init_logger(self):
         self._log = logging.getLogger("CyPerAna." + self.__class__.__name__)
@@ -41,6 +55,8 @@ class GenericWorkOut:
     def execute_non_athlete_specific_analysis(self):
         self._log.info("Executing non athlete-specific analysis on wo")
         self.set_total_time()
+        self.add_torque()
+        self.add_energy()
 
 
 class TrainerWorkOut(GenericWorkOut):
