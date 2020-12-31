@@ -6,15 +6,26 @@ import yaml
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
+
 def calculate_torque(power, rpm):
     """
     Accepts scalars and np.array() as input
-    :param power (W):
-    :param rpm (1/60s):
-    :return: torque (Nm)
+    :param power: (W)
+    :param rpm: (1/60s)
+    :return torque: (Nm)
     """
     torque = power / (2*np.pi*(rpm/60))
     return torque
+
+def calculate_energy(power, duration):
+    """
+    Accepts scalars and np.array() as input
+    :param power: (W)
+    :param duration: (s)
+    :return torque: (J)
+    """
+    energy = power * duration
+    return energy
 
 
 def generate_id(_id_keys, _wo_type, _start):
