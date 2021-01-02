@@ -42,8 +42,11 @@ def generate_id(_id_keys, _wo_type, _start):
     return _id
 
 
-def get_configuration():
-    conf_path = THIS_DIR + '\\configuration.yml'
+def get_configuration(path=None):
+    if path:
+        conf_path = path
+    else:
+        conf_path = THIS_DIR + '\\configuration.yml'
     with open(conf_path) as configuration:
         configuration = yaml.safe_load(configuration)
     return configuration
@@ -105,3 +108,16 @@ def get_age(birth):
             if birth_dt.day > now.day:
                 age -= 1
     return age
+
+
+def make_list_tuples_from_dict(input_dict):
+    tuples = []
+    for lvl1 in input_dict.keys():
+        temp_tuple = [lvl1]
+        if type(input_dict[lvl1]) is dict:
+            for lvl2 in input_dict[lvl1].keys():
+                tuples.append(tuple(temp_tuple + [lvl2]))
+        else:
+            tuples.append(tuple(temp_tuple + [""]))
+
+    return tuples

@@ -1,0 +1,51 @@
+columns:
+  speed:
+    raw:
+    1s:
+    3s:
+    5s:
+    10s:
+    30s:
+    60s:
+    300s:
+  cadence:
+    raw:
+    1s:
+    3s:
+    5s:
+    10s:
+    30s:
+    60s:
+    300s:
+  power:
+    raw:
+    1s:
+    3s:
+    5s:
+    10s:
+    30s:
+    60s:
+    300s:
+  longitude:
+  latitude:
+  altitude:
+  heart-rate:
+    raw:
+    1s:
+    3s:
+    5s:
+    10s:
+    30s:
+    60s:
+    300s:
+  distance:
+fit_map:
+  enhanced_speed: speed
+  cadence: cadence
+  power: power
+  position_long: longitude
+  position_lat: latitude
+  altitude: altitude
+  heart_rate: heart-rate
+  distance: distance
+  timestamp: time
