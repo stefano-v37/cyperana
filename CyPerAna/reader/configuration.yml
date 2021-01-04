@@ -1,53 +1,30 @@
 columns:
   speed:
-    raw:
-    1s:
-    3s:
-    5s:
-    10s:
-    30s:
-    60s:
-    300s:
+    time_series
   cadence:
-    raw:
-    1s:
-    3s:
-    5s:
-    10s:
-    30s:
-    60s:
-    300s:
+    time_series
   power:
-    raw:
-    1s:
-    3s:
-    5s:
-    10s:
-    30s:
-    60s:
-    300s:
+    time_series
   torque:
-    raw:
-    1s:
-    3s:
-    5s:
-    10s:
-    30s:
-    60s:
-    300s:
+    time_series
   longitude:
   latitude:
   altitude:
   heart-rate:
-    raw:
-    1s:
-    3s:
-    5s:
-    10s:
-    30s:
-    60s:
-    300s:
+    time_series
+  w/kg:
+    time_series
+  slope:
+    time_series
   distance:
+time_series:
+  raw:
+  1s:
+  5s:
+  30s:
+  1min:
+  5min:
+  20min:
 fit_map:
   enhanced_speed: speed
   cadence: cadence

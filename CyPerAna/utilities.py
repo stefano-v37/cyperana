@@ -98,6 +98,10 @@ def calculate_max_hr(birth):
     age = get_age(birth)
     return 220 - age
 
+def calculate_slope(distance_travelled, altitude_climbed):
+    slope = np.tan(np.arcsin(altitude_climbed/distance_travelled))
+    return slope
+
 
 def get_age(birth):
     now = dt.now()

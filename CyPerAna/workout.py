@@ -2,7 +2,8 @@ import logging
 from collections import OrderedDict
 from pandas import DataFrame, MultiIndex
 
-from .utilities import calculate_energy, calculate_torque, get_cardio_zone, THIS_DIR, get_configuration, make_list_tuples_from_dict
+from .utilities import calculate_energy, calculate_torque, get_cardio_zone, THIS_DIR, get_configuration, \
+    make_list_tuples_from_dict, calculate_slope
 
 
 class GenericWorkOut:
@@ -21,16 +22,21 @@ class GenericWorkOut:
         self.avg_hr = None
         self.avg_power = None
         self.avg_torque = None
+        self.avg_w_kg = None
         self.max_hr = None
         self.max_power = None
         self.max_torque = None
+        self.max_w_kg = None
 
         self._log = None
         self.init_logger()
 
     @property
     def data_avg(self):
-        _mi = MultiIndex.from_tuples(make_list_tuples_from_dict(get_configuration(THIS_DIR + "\\reader\\configuration.yml")["columns"]))
+        conf = get_configuration(THIS_DIR + "\\reader\\configuration.yml")
+        time_series = conf["time_series"]
+        _cols = {item[0]: item[1] if not item[1] else time_series for item in conf["columns"].items()}
+        _mi = MultiIndex.from_tuples(make_list_tuples_from_dict(_cols))
         _data = self.data.copy()
         _data.columns = MultiIndex.from_tuples((x, "") for x in _data.columns)
         _data = DataFrame(columns=_mi).append(_data)
@@ -39,7 +45,7 @@ class GenericWorkOut:
         _data = _data.loc[:, [x for x in _data.columns if x not in [(x[0], "") for x in avg_cols]]]
 
         for key in _data.columns:
-            if "s" in key[1]:
+            if (key[1] in time_series.keys()) & (key[1] != "raw"):
                 _data.loc[:, (key[0], key[1])] = _data[key[0]]["raw"].rolling(key[1]).mean()
 
         return _data[_mi]
@@ -56,6 +62,10 @@ class GenericWorkOut:
         # TODO: distinguish in full, only workout, cool-down ecc.
         self.avg_torque = self.data["torque"].mean()
 
+    def add_avg_w_kg(self):
+        # TODO: distinguish in full, only workout, cool-down ecc.
+        self.avg_w_kg = self.data["w/kg"].mean()
+
     def add_energy(self):
         self.data["energy"] = calculate_energy(self.data["power"], self.data["duration"])
         self.total_energy = self.data["energy"].sum()
@@ -70,8 +80,23 @@ class GenericWorkOut:
     def add_max_torque(self):
         self.max_torque = {x[0] : x[1] for x in self.data_avg["torque"].max().to_dict(into=OrderedDict).items() if x[0] != "raw"}
 
+    def add_max_w_kg(self):
+        self.max_w_kg = {x[0] : x[1] for x in self.data_avg["w/kg"].max().to_dict(into=OrderedDict).items() if x[0] != "raw"}
+
     def add_torque(self):
         self.data["torque"] = calculate_torque(self.data["power"], self.data["cadence"])
+
+    def add_slope(self):
+        self.data["slope"] = calculate_slope(self.data["distance-travelled"], self.data["altitude-climbed"])
+
+    def add_altitude_climbed(self):
+        self.data["altitude-climbed"] = (self.data["altitude"] - self.data["altitude"].shift(+1)).fillna(0)
+
+    def add_distance_travelled(self):
+        self.data["distance-travelled"] = self.data["distance"] - self.data["distance"].shift(+1).fillna(0)
+
+    def add_w_kg(self, weight):
+        self.data["w/kg"] = self.data["power"]/weight
 
     def init_logger(self):
         self._log = logging.getLogger("CyPerAna." + self.__class__.__name__)
@@ -93,6 +118,7 @@ class GenericWorkOut:
         self.data["cardio-zone"] = self.data["heart-rate"].apply(
             lambda x: get_cardio_zone(x, athlete_parameters["max-hr"], cardio_zones))
         # TODO: very bad computational performance here
+        self.add_w_kg(athlete_parameters["weight"])
 
     def execute_non_athlete_specific_analysis(self):
         self._log.info("Executing non athlete-specific analysis on wo")
@@ -102,9 +128,14 @@ class GenericWorkOut:
         self.add_avg_hr()
         self.add_avg_power()
         self.add_avg_torque()
+        self.add_avg_w_kg()
         self.add_max_hr()
         self.add_max_power()
         self.add_max_torque()
+        self.add_max_w_kg()
+        self.add_altitude_climbed()
+        self.add_distance_travelled()
+        self.add_slope()
 
 
 class TrainerWorkOut(GenericWorkOut):
