@@ -4,13 +4,14 @@ from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.pyplot as plt
 
 color_maps = {"orange": ["orangered", "darkorange", "orange"],
-             "red": ["darkred", "red", "orangered"],
-             "blue":  ["midnightblue", "darkblue", "royalblue"],
-             "green": ["darkgreen", "green", "limegreen"],
-             "sky": ["navy", "darkcyan", "aquamarine"],
-             "sunset": ["darkcyan", "mediumslateblue", "deeppink"]}
+              "red": ["darkred", "red", "orangered"],
+              "blue": ["midnightblue", "darkblue", "royalblue"],
+              "green": ["darkgreen", "green", "limegreen"],
+              "sky": ["navy", "darkcyan", "aquamarine"],
+              "sunset": ["darkcyan", "mediumslateblue", "deeppink"]}
 
-rescale = lambda scale: (scale - np.min(scale)) / (np.max(scale) - np.min(scale))
+def rescale(scale):
+    return (scale - np.min(scale)) / (np.max(scale) - np.min(scale))
 
 
 def uniform_colormap(color, scale):
