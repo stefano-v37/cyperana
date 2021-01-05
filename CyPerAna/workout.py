@@ -2,6 +2,7 @@ import logging
 from collections import OrderedDict
 from pandas import DataFrame, MultiIndex
 
+from .plotter import Plotter, x_bar, y_bar
 from .utilities import calculate_energy, calculate_torque, get_cardio_zone, THIS_DIR, get_configuration, \
     make_list_tuples_from_dict, calculate_slope
 
@@ -136,6 +137,15 @@ class GenericWorkOut:
         self.add_altitude_climbed()
         self.add_distance_travelled()
         self.add_slope()
+
+    def plot(self, plot_type, **kwargs):
+        new_plot = Plotter()
+        new_plot.configure_parameters(**kwargs)
+        if plot_type == "hr-kpi":
+            new_plot.plot_bar(x_bar(self.max_hr.keys()) + ["Average"],
+                              y_bar(self.max_hr.values()) + [self.avg_hr],
+                              color="sky",
+                              xlabel="Hearth rate\n(1/60s)")
 
 
 class TrainerWorkOut(GenericWorkOut):
